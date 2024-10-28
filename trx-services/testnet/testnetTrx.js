@@ -69,7 +69,7 @@ const getContract = async (contr) => {
 
 // getContract("41eca9bc828a3005b9a3b909f2cc5c2a54794de05f")
  
-sendTestnetTrx("TYLp6K2BzWGURaVcWqa5Z6TAhYsMnSa6LC", "TGpugTNwBLCNnGub7gV3x1V6DH5wU6wxCG", 7, "B58FF8C2708ABF8F8CADE837F678C3D6191CA327053A42114D1525F93F632C92")
+// sendTestnetTrx("TYLp6K2BzWGURaVcWqa5Z6TAhYsMnSa6LC", "TU5G97XX7BF75EUsPArYD3ca6qri8goe7E", 10, "B58FF8C2708ABF8F8CADE837F678C3D6191CA327053A42114D1525F93F632C92", contractAdd)
 
 // /done......
 const estimateTransactionFee = async ( fromAddress, toAddress, contractAdd) => {
@@ -121,7 +121,6 @@ const getTronBalance = async (address) => {
 };
 ///other trx token balance
 const getTtxTokenBalance = async (address, contractAdd) => {
-  console.log("address......", address)
 try {
     // Create an instance of the token contract
     tronWeb.setAddress(address);
@@ -140,7 +139,6 @@ try {
 }
 };
 
-//done
 const checkTestnetTransactionStatus = async (transactionID) => {
   try {
       // Fetch basic transaction details
@@ -168,7 +166,7 @@ const checkTestnetTransactionStatus = async (transactionID) => {
 const getTrxTokensDepoit = async (usdtContractAddress, trackedAddresses) => {
   let lastFingerprint = null; // Use fingerprint to keep track of paginated results
   let detectedEvents = [];  // Array to store the entire detected deposit events
-let interval = 1000
+let interval = 300000
   const checkForNewDeposits = async () => {
     try {
       // Query the contract's Transfer events
@@ -210,25 +208,22 @@ let interval = 1000
     } catch (error) {
       console.error('Error checking for new deposits:', error);
     }
-    // console.log("..........")
-    return detectedEvents; // Return the array of events
+    return detectedEvents;
   };
-  // console.log(detectedEvents)
   
-  // Poll for new deposits at the specified interval
   setInterval(checkForNewDeposits, interval);
   detectedEvents = await checkForNewDeposits()
   if(!detectedEvents) {
     return;
   }
 
-  return detectedEvents; // Return the array (initially empty)
+  return detectedEvents;
 };
 
 const getTronDeposits = async (trackedAddresses) => {
   let lastCheckedBlockNumber = 0; // Keep track of the last checked block
   let detectedTrxDeposits = [];   // Array to store detected TRX transactions
-  let interval = 1000;
+  let interval = 500000;
 
   const checkForNewDeposits = async () => {
     try {
@@ -302,25 +297,6 @@ const watchAllTokens = async (trackedAddresses, usdtContractAddress = null) => {
   }
 
 }
-
-// getTronDeposits(['TGpugTNwBLCNnGub7gV3x1V6DH5wU6wxCG', 'TL3Vd5TGeUNscSQV7CxkNPB2Nrxsy3GVnE']); // Check every 10 seconds
-
-const testFun = async () => {
-  const data = await watchAllTokens(['TGpugTNwBLCNnGub7gV3x1V6DH5wU6wxCG', 'TL3Vd5TGeUNscSQV7CxkNPB2Nrxsy3GVnE']); // Check every 10 seconds
-  console.log("data.........", data[0])
-}
-
-const testF = () => {
-  setInterval(() => {
-    testFun()
-  },5000) 
-}
-
-// testF()
-// startTestnetPolling()
-
-  
-
     
 module.exports = { 
   generateTronAddress, 

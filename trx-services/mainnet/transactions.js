@@ -98,12 +98,6 @@ const getAddressTransactions = async (address) => {
         console.error('Error retrieving transactions:', error.response ? error.response.data : error);
     }
 };
-const startPolling = (address, interval) => {
-    setInterval(() => {
-        getAddressTransactions(address);
-    }, interval);
-}
 
-// getAddressTransactions("TYLp6K2BzWGURaVcWqa5Z6TAhYsMnSa6LC")
 
 module.exports = { generateTronAddress, sendTrx, getAddressInfo, checkTransactionStatus, getAddressTransactions }
